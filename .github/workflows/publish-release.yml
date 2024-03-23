@@ -1,0 +1,38 @@
+# GOAL: Create pre-releases when changes are pushed to a release branch. On success it creates a tag for the build.
+#       Such a release can then be promoted to a full release.
+
+name: "Publish Release"
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  build-release-bundle:
+    name: Build global release bundle
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Cache Maven artifacts
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+      - name: Setup build environment
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+      - name: Create the release artifact
+        run: mvn package -DskipTests -Pci -Dassembly.name=GA
+      - name: Create pre-release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          draft: false
+          prerelease: true
+          title: Changes For 2.0-SNAPSHOT
+          files: |
+            comixed-metatadata-comicvine-2.0-SNAPSHOT-GA.zip
