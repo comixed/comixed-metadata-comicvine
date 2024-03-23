@@ -4,6 +4,10 @@ This project provides a metadata adaptor for the [ComiXed](http://www.comixedpro
 digital comic book management system that uses [ComicVine](http://www.comicvine.com) as
 its data source.
 
+# Status
+
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=comixed_comixed-metadata-comicvine)](https://sonarcloud.io/dashboard?id=comixed_comixed-metadata-comicvine)
+
 
 # Installation
 
