@@ -20,4 +20,4 @@ To use this adaptor, you need to:
 
 # Configuration
 
-TODO
+See the [installation](INSTALLATION.md) file for details.
