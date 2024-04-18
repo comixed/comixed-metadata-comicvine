@@ -35,4 +35,4 @@ jobs:
           prerelease: true
           title: Changes For 2.0.0-1
           files: |
-            comixed-metatadata-comicvine-2.0.0-1-GA.zip
+            comixed-metadata-comicvine-2.0.0-1-GA.zip
