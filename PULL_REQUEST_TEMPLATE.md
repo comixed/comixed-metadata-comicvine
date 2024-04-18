@@ -10,9 +10,6 @@ including this top section.
 ## Status
 READY/IN DEVELOPMENT/HOLD
 
-## Does this PR contain migrations?
-YES | NO
-
 ## Before You Submit Your PR:
 - [ ] Have you announced your PR on the comixed-dev mailing list?
 - [ ] New feature (non-breaking change which adds functionality)
