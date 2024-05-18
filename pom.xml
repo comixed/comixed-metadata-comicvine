@@ -173,7 +173,7 @@
         <dependency>
             <groupId>org.comixedproject</groupId>
             <artifactId>comixed-metadata</artifactId>
-            <version>[2.0,)</version>
+            <version>[2.1,)</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -300,18 +300,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${project.basedir}</directory>
-                            <includes>comixed-metadata-comicvine-release-*.zip</includes>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>3.2.1</version>
@@ -414,25 +402,6 @@
                     <execution>
                         <goals>
                             <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <outputDirectory>${project.basedir}</outputDirectory>
-                    <descriptors>
-                        <descriptor>${project.basedir}/src/main/assembly/src.xml</descriptor>
-                    </descriptors>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>
