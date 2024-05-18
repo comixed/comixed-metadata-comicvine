@@ -37,9 +37,12 @@ public class ComicVineMetadataAdaptorProvider extends AbstractMetadataAdaptorPro
   /** The API key property name. */
   static final String PROPERTY_API_KEY = "comic-vine.api-key";
 
+  private static final String VERSION = "2.1-SNAPSHOT";
+  private static final String HOMEPAGE = "http://www.github.com/comixed/comixed-metadata-comicvine";
+
   /** Creates a default instance. */
   public ComicVineMetadataAdaptorProvider() {
-    super(PROVIDER_NAME);
+    super(PROVIDER_NAME, VERSION, HOMEPAGE);
 
     this.addProperty(PROPERTY_API_KEY);
   }
