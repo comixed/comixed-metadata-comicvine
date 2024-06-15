@@ -50,10 +50,15 @@ public class ComicVineMetadataAdaptorTest {
   private static final String TEST_VOLUME_ID = "129";
   private static final String TEST_ISSUE_NUMBER = "17";
   private static final String TEST_ISSUE_ID = "327";
+  private static final String TEST_WEB_ADDRESS =
+      "https://comicvine.gamespot.com/action-comics-futures-end-1-crossroads/4000-463937";
+  private static final String TEST_REFERENCE_ID = "463937";
+
   private final List<VolumeMetadata> volumeMetadataList = new ArrayList<>();
   private final List<IssueMetadata> issueMetadataList = new ArrayList<>();
   private final List<String> entries = new ArrayList<>();
   private final Set<MetadataSourceProperty> metadataSourceProperties = new HashSet<>();
+
   @InjectMocks private ComicVineMetadataAdaptor adaptor;
   @Mock private ComicVineGetVolumesAction getVolumesAction;
   @Mock private ComicVineGetAllIssuesAction getAllIssuesAction;
@@ -233,5 +238,14 @@ public class ComicVineMetadataAdaptorTest {
 
     Mockito.verify(getIssueDetailsAction, Mockito.times(1)).setApiKey(TEST_API_KEY);
     Mockito.verify(getIssueDetailsAction, Mockito.times(1)).setIssueId(TEST_ISSUE_ID);
+  }
+
+  @Test
+  public void testGetReferenceId() {
+    final String result = adaptor.getReferenceId(TEST_WEB_ADDRESS);
+
+    assertNotNull(result);
+    assertFalse(result.isEmpty());
+    assertEquals(TEST_REFERENCE_ID, result);
   }
 }

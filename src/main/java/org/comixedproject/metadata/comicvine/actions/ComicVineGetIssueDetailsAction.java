@@ -84,6 +84,7 @@ public class ComicVineGetIssueDetailsAction
     result.setStoreDate(issueDetails.getStoreDate());
     result.setTitle(issueDetails.getTitle());
     result.setDescription(issueDetails.getDescription());
+    result.setWebAddress(issueDetails.getSiteDetailURL());
 
     for (ComicVineCharacter character : issueDetails.getCharacters())
       result.getCharacters().add(character.getName());

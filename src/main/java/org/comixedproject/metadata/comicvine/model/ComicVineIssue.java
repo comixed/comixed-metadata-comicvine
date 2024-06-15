@@ -58,6 +58,10 @@ public class ComicVineIssue {
   @Getter
   private String description;
 
+  @JsonProperty("site_detail_url")
+  @Getter
+  private String siteDetailURL;
+
   @JsonProperty("image")
   @Getter
   private ComicVineImage image = new ComicVineImage();
