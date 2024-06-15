@@ -18,10 +18,12 @@
 
 package org.comixedproject.metadata.comicvine.adaptors;
 
-import static org.comixedproject.metadata.comicvine.adaptors.ComicVineMetadataAdaptorProvider.PROPERTY_API_KEY;
-import static org.comixedproject.metadata.comicvine.adaptors.ComicVineMetadataAdaptorProvider.PROVIDER_NAME;
+import static org.comixedproject.metadata.comicvine.adaptors.ComicVineMetadataAdaptorProvider.*;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.extern.log4j.Log4j2;
 import org.comixedproject.metadata.MetadataException;
 import org.comixedproject.metadata.adaptors.AbstractMetadataAdaptor;
@@ -43,8 +45,12 @@ import org.comixedproject.model.metadata.MetadataSource;
  */
 @Log4j2
 public class ComicVineMetadataAdaptor extends AbstractMetadataAdaptor {
+  static final String REFERENCE_ID_PATTERN =
+      "^http[s]?\\:\\/\\/comicvine\\.gamespot\\.com\\/.*\\/4000-([\\d]{1,6}).*";
   /** The base URL for ComicVine. */
   public static final String BASE_URL = "https://comicvine.gamespot.com";
+
+  public static final long MINIMUM_DELAY_VALUE = 1L;
 
   /** The action to fetch the list of volumes. */
   protected ComicVineGetVolumesAction comicVineGetVolumesAction = new ComicVineGetVolumesAction();
@@ -73,6 +79,7 @@ public class ComicVineMetadataAdaptor extends AbstractMetadataAdaptor {
     this.comicVineGetVolumesAction.setBaseUrl(BASE_URL);
     this.comicVineGetVolumesAction.setApiKey(
         this.getSourcePropertyByName(metadataSource.getProperties(), PROPERTY_API_KEY, true));
+    this.comicVineGetVolumesAction.setDelay(this.doGetDelayValue(metadataSource));
     this.comicVineGetVolumesAction.setSeries(seriesName);
     this.comicVineGetVolumesAction.setMaxRecords(maxRecords);
 
@@ -91,6 +98,7 @@ public class ComicVineMetadataAdaptor extends AbstractMetadataAdaptor {
     this.comicVineGetAllIssuesAction.setBaseUrl(BASE_URL);
     this.comicVineGetAllIssuesAction.setApiKey(
         this.getSourcePropertyByName(metadataSource.getProperties(), PROPERTY_API_KEY, true));
+    this.comicVineGetAllIssuesAction.setDelay(this.doGetDelayValue(metadataSource));
     this.comicVineGetAllIssuesAction.setVolumeId(volume);
 
     log.debug("Executing action");
@@ -128,5 +136,34 @@ public class ComicVineMetadataAdaptor extends AbstractMetadataAdaptor {
     this.comicVineGetIssueDetailsAction.setIssueId(issueId);
 
     return this.comicVineGetIssueDetailsAction.execute();
+  }
+
+  @Override
+  public String getReferenceId(final String webAddress) {
+    final Pattern pattern = Pattern.compile(REFERENCE_ID_PATTERN);
+    final Matcher matches = pattern.matcher(webAddress);
+    String referenceId = null;
+    if (matches.matches()) {
+      referenceId = matches.group(1);
+    }
+    return referenceId;
+  }
+
+  private long doGetDelayValue(final MetadataSource metadataSource) {
+    long result = MINIMUM_DELAY_VALUE;
+    try {
+      final String defined =
+          this.getSourcePropertyByName(metadataSource.getProperties(), PROPERTY_DELAY, false);
+      if (!Objects.isNull(defined)) {
+        result = Long.parseLong(defined);
+      }
+    } catch (MetadataException | NumberFormatException error) {
+      log.error("Failed to load property: " + PROPERTY_DELAY, error);
+    }
+    if (result < MINIMUM_DELAY_VALUE) {
+      result = MINIMUM_DELAY_VALUE;
+    }
+    log.trace("Returning delay value: {}", result);
+    return result;
   }
 }

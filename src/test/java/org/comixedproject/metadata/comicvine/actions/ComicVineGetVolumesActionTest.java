@@ -40,6 +40,7 @@ import org.springframework.http.MediaType;
 @RunWith(MockitoJUnitRunner.class)
 public class ComicVineGetVolumesActionTest {
   private static final String TEST_API_KEY = "OICU812";
+  private static final long TEST_DELAY = 1L;
   private static final String TEST_VOLUME_NAME = "Action Comics";
   private static final String TEST_BAD_RESPONSE_BODY = "This is not JSON";
   private static final String TEST_RESPONSE_BODY =
@@ -62,6 +63,7 @@ public class ComicVineGetVolumesActionTest {
     final String hostname = String.format("http://localhost:%s", this.comicVineServer.getPort());
     action.setBaseUrl(hostname);
     action.setApiKey(TEST_API_KEY);
+    action.setDelay(TEST_DELAY);
     action.setSeries(TEST_VOLUME_NAME);
   }
 

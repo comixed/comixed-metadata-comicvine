@@ -54,6 +54,7 @@ public class ComicVineGetIssueWithDetailsAction
     this.addField("store_date");
     this.addField("name");
     this.addField("description");
+    this.addField("site_detail_url");
     this.addField("character_credits");
     this.addField("team_credits");
     this.addField("location_credits");

@@ -71,6 +71,8 @@ public abstract class AbstractComicVineScrapingAction<T> extends AbstractScrapin
 
   @Getter @Setter protected String baseUrl;
   @Getter @Setter private String apiKey;
+  @Getter @Setter private long delay = 0L;
+
   private String maskedApiKey;
 
   protected AbstractComicVineScrapingAction() {

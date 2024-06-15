@@ -112,6 +112,16 @@ public class ComicVineGetAllIssuesAction
       done =
           response.getOffset() + response.getNumberOfPageResults()
               >= response.getNumberOfTotalResults();
+
+      if (!done) {
+        log.trace("Sleeping for {}s", this.getDelay());
+        try {
+          Thread.sleep(this.getDelay() * 1000L);
+        } catch (InterruptedException error) {
+          log.error("ComicVine get volumes action interrupted", error);
+          throw new RuntimeException(error);
+        }
+      }
     }
 
     return result;

@@ -39,17 +39,24 @@ public class ComicVineMetadataAdaptorProvider extends AbstractMetadataAdaptorPro
 
   private static final String VERSION = "2.1-SNAPSHOT";
   private static final String HOMEPAGE = "http://www.github.com/comixed/comixed-metadata-comicvine";
+  static final String PROPERTY_DELAY = "comic-vine.delay";
 
   /** Creates a default instance. */
   public ComicVineMetadataAdaptorProvider() {
     super(PROVIDER_NAME, VERSION, HOMEPAGE);
 
     this.addProperty(PROPERTY_API_KEY);
+    this.addProperty(PROPERTY_DELAY);
   }
 
   @Override
   public MetadataAdaptor create() {
     log.debug("Creating an instance of the ComicVine metadata adaptor");
     return new ComicVineMetadataAdaptor();
+  }
+
+  @Override
+  public boolean supportedReference(final String reference) {
+    return reference.matches(ComicVineMetadataAdaptor.REFERENCE_ID_PATTERN);
   }
 }
