@@ -46,11 +46,12 @@ import org.comixedproject.model.metadata.MetadataSource;
 @Log4j2
 public class ComicVineMetadataAdaptor extends AbstractMetadataAdaptor {
   static final String REFERENCE_ID_PATTERN =
-      "^http[s]?\\:\\/\\/comicvine\\.gamespot\\.com\\/.*\\/4000-([\\d]{1,6}).*";
+      "^https?\\:\\/\\/(www\\.comicvine\\.com|comicvine\\.gamespot\\.com)\\/.*\\/4000-([\\d]{1,6}).*";
   /** The base URL for ComicVine. */
   public static final String BASE_URL = "https://comicvine.gamespot.com";
 
   public static final long MINIMUM_DELAY_VALUE = 1L;
+  public static final int REFERENCE_ID_POSITION = 2;
 
   /** The action to fetch the list of volumes. */
   protected ComicVineGetVolumesAction comicVineGetVolumesAction = new ComicVineGetVolumesAction();
@@ -144,7 +145,7 @@ public class ComicVineMetadataAdaptor extends AbstractMetadataAdaptor {
     final Matcher matches = pattern.matcher(webAddress);
     String referenceId = null;
     if (matches.matches()) {
-      referenceId = matches.group(1);
+      referenceId = matches.group(REFERENCE_ID_POSITION);
     }
     return referenceId;
   }
