@@ -85,6 +85,7 @@ public class ComicVineGetAllIssuesAction
         final ComicVineIssue issue = response.getResults().getIssues().get(index);
 
         final IssueDetailsMetadata entry = new IssueDetailsMetadata();
+        entry.setSourceId(issue.getId());
         entry.setPublisher(response.getResults().getPublisher().getName());
         entry.setSeries(response.getResults().getName());
         entry.setIssueNumber(issue.getIssueNumber());
