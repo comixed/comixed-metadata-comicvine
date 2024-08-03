@@ -29,6 +29,10 @@ import lombok.Getter;
  * @author Darryl L. Pierce
  */
 public class ComicVineVolumeDetail {
+  @JsonProperty("id")
+  @Getter
+  private String id;
+
   @JsonProperty("issues")
   @Getter
   private List<ComicVineIssue> issues;

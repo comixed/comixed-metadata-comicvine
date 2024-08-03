@@ -41,12 +41,7 @@ public class ComicVineGetIssueWithDetailsAction
 
   @Getter @Setter private String issueId;
 
-  @Override
-  public ComicVineIssue execute() throws MetadataException {
-    if (!StringUtils.hasLength(this.baseUrl)) throw new MetadataException("Missing base URL");
-    if (!StringUtils.hasLength(this.getApiKey())) throw new MetadataException("Missing API key");
-    if (this.issueId == null) throw new MetadataException("Missing issue id");
-
+  public ComicVineGetIssueWithDetailsAction() {
     this.addField("id");
     this.addField("volume");
     this.addField("issue_number");
@@ -60,6 +55,13 @@ public class ComicVineGetIssueWithDetailsAction
     this.addField("location_credits");
     this.addField("story_arc_credits");
     this.addField("person_credits");
+  }
+
+  @Override
+  public ComicVineIssue execute() throws MetadataException {
+    if (!StringUtils.hasLength(this.baseUrl)) throw new MetadataException("Missing base URL");
+    if (!StringUtils.hasLength(this.getApiKey())) throw new MetadataException("Missing API key");
+    if (this.issueId == null) throw new MetadataException("Missing issue id");
 
     log.debug(
         "Querying ComicVine for issue: id={} API key={}", this.issueId, this.getMaskedApiKey());

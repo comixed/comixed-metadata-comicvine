@@ -85,10 +85,11 @@ public class ComicVineGetAllIssuesAction
         final ComicVineIssue issue = response.getResults().getIssues().get(index);
 
         final IssueDetailsMetadata entry = new IssueDetailsMetadata();
-        entry.setPublisher(response.getResults().getPublisher().getName());
-        entry.setSeries(response.getResults().getName());
-        entry.setIssueNumber(issue.getIssueNumber());
-        entry.setVolume(response.getResults().getStartYear());
+        entry.setSourceId(issue.getId());
+        entry.setPublisher(response.getResults().getPublisher().getName().trim());
+        entry.setSeries(response.getResults().getName().trim());
+        entry.setIssueNumber(issue.getIssueNumber().trim());
+        entry.setVolume(response.getResults().getStartYear().trim());
         entry.setTitle(issue.getTitle());
         entry.setCoverDate(issue.getCoverDate());
         entry.setStoreDate(issue.getStoreDate());
@@ -99,9 +100,9 @@ public class ComicVineGetAllIssuesAction
           this.getIssueWithDetailsAction.setBaseUrl(this.getBaseUrl());
           this.getIssueWithDetailsAction.setApiKey(this.getApiKey());
           this.getIssueWithDetailsAction.setIssueId(issue.getId());
-          final ComicVineIssue metadata = this.getIssueWithDetailsAction.execute();
-          entry.setCoverDate(metadata.getCoverDate());
-          entry.setStoreDate(metadata.getStoreDate());
+          //          final ComicVineIssue metadata = this.getIssueWithDetailsAction.execute();
+          //          entry.setCoverDate(metadata.getCoverDate());
+          //          entry.setStoreDate(metadata.getStoreDate());
         } catch (Exception error) {
           log.error("Failed to get issue cover and store dates", error);
         }
