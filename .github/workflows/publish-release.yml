@@ -33,6 +33,6 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           draft: false
           prerelease: true
-          title: Changes For 2.1.1-1
+          title: Changes For 2.1.2-1
           files: |
-            comixed-metadata-comicvine-2.1.1-1-GA.zip
+            comixed-metadata-comicvine-2.1.2-1-GA.zip

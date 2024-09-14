@@ -4,7 +4,7 @@
     <groupId>org.comixedproject</groupId>
     <artifactId>comixed-metadata-comicvine</artifactId>
     <packaging>jar</packaging>
-    <version>2.1.1-1</version>
+    <version>2.1.2-1</version>
     <name>comixed-metadata-comicvine</name>
     <url>http://www.comixedproject.org</url>
 
@@ -382,7 +382,7 @@
                 <artifactId>gitlog-maven-plugin</artifactId>
                 <version>1.14.0</version>
                 <configuration>
-                    <reportTitle>Changelog for the ComiXed ComicVine Metadata Scraper v2.1.1-1</reportTitle>
+                    <reportTitle>Changelog for the ComiXed ComicVine Metadata Scraper v2.1.2-1</reportTitle>
                     <verbose>false</verbose>
                     <outputDirectory>${project.basedir}</outputDirectory>
                     <generateMarkdownChangeLog>true</generateMarkdownChangeLog>
