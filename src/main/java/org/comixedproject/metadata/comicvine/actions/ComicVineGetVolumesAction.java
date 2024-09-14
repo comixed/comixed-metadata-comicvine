@@ -89,7 +89,8 @@ public class ComicVineGetVolumesAction
           response.getVolumes().size() == 1 ? "" : "s");
 
       Integer totalRecords = maxRecords;
-      if (totalRecords == 0) totalRecords = response.getVolumes().size();
+      if (totalRecords == 0 || totalRecords >= response.getVolumes().size())
+        totalRecords = response.getVolumes().size();
 
       response
           .getVolumes()
