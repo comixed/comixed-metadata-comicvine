@@ -46,7 +46,7 @@ import org.comixedproject.model.metadata.MetadataSource;
 @Log4j2
 public class ComicVineMetadataAdaptor extends AbstractMetadataAdaptor {
   static final String REFERENCE_ID_PATTERN =
-      "^https?\\:\\/\\/(www\\.comicvine\\.com|comicvine\\.gamespot\\.com)\\/.*\\/4000-([\\d]{1,6}).*";
+      "^https?\\:\\/\\/(www\\.comicvine\\.com|comicvine\\.gamespot\\.com)\\/.*\\/4000-([\\d]+).*";
   /** The base URL for ComicVine. */
   public static final String BASE_URL = "https://comicvine.gamespot.com";
 
