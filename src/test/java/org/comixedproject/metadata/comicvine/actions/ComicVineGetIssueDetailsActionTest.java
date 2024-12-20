@@ -19,6 +19,7 @@
 package org.comixedproject.metadata.comicvine.actions;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertFalse;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -217,8 +218,6 @@ public class ComicVineGetIssueDetailsActionTest {
     assertEquals(TEST_CREDIT_NAME, result.getCredits().get(1).getName());
     assertEquals(TEST_CREDIT_TAG_2, result.getCredits().get(1).getRole());
   }
-
-  private void assertFalse(final boolean empty) {}
 
   private void verifyGetPublisherDetailsAction() throws MetadataException {
     Mockito.verify(getPublisherDetailsAction, Mockito.times(1))

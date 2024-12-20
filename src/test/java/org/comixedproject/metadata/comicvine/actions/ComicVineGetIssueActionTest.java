@@ -23,7 +23,6 @@ import static junit.framework.TestCase.assertNotNull;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.comixedproject.metadata.MetadataException;
@@ -39,7 +38,6 @@ import org.springframework.http.MediaType;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ComicVineGetIssueActionTest {
-  private static final Random RANDOM = new Random();
   private static final String TEST_API_KEY = "This.is.the.test.api.key";
   private static final String TEST_VOLUME_ID = "219";
   private static final String TEST_ISSUE_NUMBER = "989";

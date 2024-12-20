@@ -21,10 +21,8 @@ package org.comixedproject.metadata.comicvine.adaptors;
 import static junit.framework.TestCase.*;
 import static org.comixedproject.metadata.comicvine.adaptors.ComicVineMetadataAdaptorProvider.PROPERTY_API_KEY;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.*;
 import org.comixedproject.metadata.MetadataException;
-import org.comixedproject.metadata.comicvine.actions.ComicVineGetAllIssuesAction;
 import org.comixedproject.metadata.comicvine.actions.ComicVineGetIssueAction;
 import org.comixedproject.metadata.comicvine.actions.ComicVineGetIssueDetailsAction;
 import org.comixedproject.metadata.comicvine.actions.ComicVineGetVolumesAction;
@@ -59,12 +57,10 @@ public class ComicVineMetadataAdaptorTest {
 
   private final List<VolumeMetadata> volumeMetadataList = new ArrayList<>();
   private final List<IssueMetadata> issueMetadataList = new ArrayList<>();
-  private final List<String> entries = new ArrayList<>();
   private final Set<MetadataSourceProperty> metadataSourceProperties = new HashSet<>();
 
   @InjectMocks private ComicVineMetadataAdaptor adaptor;
   @Mock private ComicVineGetVolumesAction getVolumesAction;
-  @Mock private ComicVineGetAllIssuesAction getAllIssuesAction;
   @Mock private ComicVineGetIssueAction getIssueAction;
   @Mock private ComicVineGetIssueDetailsAction getIssueDetailsAction;
   @Mock private VolumeMetadata volumeMetadata;
@@ -74,22 +70,17 @@ public class ComicVineMetadataAdaptorTest {
 
   @Before
   public void setUp() {
-    adaptor.comicVineGetVolumesAction = this.getVolumesAction;
-    adaptor.comicVineGetAllIssuesAction = this.getAllIssuesAction;
-    adaptor.comicVineGetIssueAction = this.getIssueAction;
-    adaptor.comicVineGetIssueDetailsAction = this.getIssueDetailsAction;
-
     Mockito.when(metadataSource.getProperties()).thenReturn(metadataSourceProperties);
     metadataSourceProperties.add(
         new MetadataSourceProperty(metadataSource, PROPERTY_API_KEY, TEST_API_KEY));
   }
 
   @Test(expected = MetadataException.class)
-  public void testGetVolumesMissingApiKey() throws MetadataException {
+  public void testGetVolumes_missingApiKey() throws MetadataException {
     metadataSourceProperties.clear();
 
     try {
-      adaptor.getVolumes(TEST_SERIES_NAME, TEST_MAX_RECORDS, metadataSource);
+      adaptor.doGetVolumes(TEST_SERIES_NAME, TEST_MAX_RECORDS, metadataSource, getVolumesAction);
     } finally {
       Mockito.verify(getVolumesAction, Mockito.times(1))
           .setBaseUrl(ComicVineMetadataAdaptor.BASE_URL);
@@ -97,7 +88,7 @@ public class ComicVineMetadataAdaptorTest {
   }
 
   @Test(expected = MetadataException.class)
-  public void testGetVolumesUnsetApiKey() throws MetadataException {
+  public void testGetVolumes_unsetApiKey() throws MetadataException {
     metadataSourceProperties.stream()
         .filter(property -> property.getName().equals(PROPERTY_API_KEY))
         .findFirst()
@@ -105,7 +96,7 @@ public class ComicVineMetadataAdaptorTest {
         .setValue("");
 
     try {
-      adaptor.getVolumes(TEST_SERIES_NAME, TEST_MAX_RECORDS, metadataSource);
+      adaptor.doGetVolumes(TEST_SERIES_NAME, TEST_MAX_RECORDS, metadataSource, getVolumesAction);
     } finally {
       Mockito.verify(getVolumesAction, Mockito.times(1))
           .setBaseUrl(ComicVineMetadataAdaptor.BASE_URL);
@@ -113,11 +104,11 @@ public class ComicVineMetadataAdaptorTest {
   }
 
   @Test
-  public void testGetVolumesNoResults() throws MetadataException, JsonProcessingException {
+  public void testGetVolumes_noResults() throws MetadataException {
     Mockito.when(getVolumesAction.execute()).thenReturn(volumeMetadataList);
 
     final List<VolumeMetadata> result =
-        adaptor.getVolumes(TEST_SERIES_NAME, TEST_MAX_RECORDS, metadataSource);
+        adaptor.doGetVolumes(TEST_SERIES_NAME, TEST_MAX_RECORDS, metadataSource, getVolumesAction);
 
     assertNotNull(result);
     assertTrue(result.isEmpty());
@@ -130,13 +121,13 @@ public class ComicVineMetadataAdaptorTest {
   }
 
   @Test
-  public void testGetVolumes() throws MetadataException, JsonProcessingException {
+  public void testGetVolumes() throws MetadataException {
     for (int index = 0; index < 200; index++) volumeMetadataList.add(volumeMetadata);
 
     Mockito.when(getVolumesAction.execute()).thenReturn(volumeMetadataList);
 
     final List<VolumeMetadata> result =
-        adaptor.getVolumes(TEST_SERIES_NAME, TEST_MAX_RECORDS, metadataSource);
+        adaptor.doGetVolumes(TEST_SERIES_NAME, TEST_MAX_RECORDS, metadataSource, getVolumesAction);
 
     assertNotNull(result);
     assertEquals(volumeMetadataList.size(), result.size());
@@ -149,11 +140,11 @@ public class ComicVineMetadataAdaptorTest {
   }
 
   @Test
-  public void testGetIssueNoResults() throws MetadataException, JsonProcessingException {
+  public void testGetIssue_noResults() throws MetadataException {
     Mockito.when(getIssueAction.execute()).thenReturn(issueMetadataList);
 
     final IssueMetadata result =
-        adaptor.getIssue(TEST_VOLUME_ID, TEST_ISSUE_NUMBER, metadataSource);
+        adaptor.doGetIssue(TEST_VOLUME_ID, TEST_ISSUE_NUMBER, metadataSource, getIssueAction);
 
     assertNull(result);
 
@@ -163,13 +154,13 @@ public class ComicVineMetadataAdaptorTest {
   }
 
   @Test
-  public void testGetIssue() throws MetadataException, JsonProcessingException {
+  public void testGetIssue() throws MetadataException {
     issueMetadataList.add(issueMetadata);
 
     Mockito.when(getIssueAction.execute()).thenReturn(issueMetadataList);
 
     final IssueMetadata result =
-        adaptor.getIssue(TEST_VOLUME_ID, TEST_ISSUE_NUMBER, metadataSource);
+        adaptor.doGetIssue(TEST_VOLUME_ID, TEST_ISSUE_NUMBER, metadataSource, getIssueAction);
 
     assertNotNull(result);
     assertSame(issueMetadata, result);
@@ -181,14 +172,14 @@ public class ComicVineMetadataAdaptorTest {
   }
 
   @Test
-  public void testGetIssueWhenIssueNumberHasLeadingZeroes()
-      throws MetadataException, JsonProcessingException {
+  public void testGetIssue_issueNumberHasLeadingZeroes() throws MetadataException {
     issueMetadataList.add(issueMetadata);
 
     Mockito.when(getIssueAction.execute()).thenReturn(issueMetadataList);
 
     final IssueMetadata result =
-        adaptor.getIssue(TEST_VOLUME_ID, "0000" + TEST_ISSUE_NUMBER, metadataSource);
+        adaptor.doGetIssue(
+            TEST_VOLUME_ID, "0000" + TEST_ISSUE_NUMBER, metadataSource, getIssueAction);
 
     assertNotNull(result);
     assertSame(issueMetadata, result);
@@ -196,17 +187,17 @@ public class ComicVineMetadataAdaptorTest {
     Mockito.verify(getIssueAction, Mockito.times(1)).setBaseUrl(ComicVineMetadataAdaptor.BASE_URL);
     Mockito.verify(getIssueAction, Mockito.times(1)).setApiKey(TEST_API_KEY);
     Mockito.verify(getIssueAction, Mockito.times(1)).setVolumeId(TEST_VOLUME_ID);
-    Mockito.verify(getIssueAction, Mockito.times(1)).setIssueNumber(TEST_ISSUE_NUMBER);
+    Mockito.verify(getIssueAction, Mockito.times(1)).setIssueNumber("0000" + TEST_ISSUE_NUMBER);
   }
 
   @Test
-  public void testGetIssueWhenIssueNumberIsZero()
-      throws MetadataException, JsonProcessingException {
+  public void testGetIssue_issueNumberIsZero() throws MetadataException {
     issueMetadataList.add(issueMetadata);
 
     Mockito.when(getIssueAction.execute()).thenReturn(issueMetadataList);
 
-    final IssueMetadata result = adaptor.getIssue(TEST_VOLUME_ID, "000", metadataSource);
+    final IssueMetadata result =
+        adaptor.doGetIssue(TEST_VOLUME_ID, "0", metadataSource, getIssueAction);
 
     assertNotNull(result);
     assertSame(issueMetadata, result);
@@ -218,10 +209,11 @@ public class ComicVineMetadataAdaptorTest {
   }
 
   @Test
-  public void testGetIssueDetailsNoResults() throws MetadataException {
+  public void testGetIssueDetails_noResults() throws MetadataException {
     Mockito.when(getIssueDetailsAction.execute()).thenReturn(issueDetailsMetadata);
 
-    final IssueDetailsMetadata result = adaptor.getIssueDetails(TEST_ISSUE_ID, metadataSource);
+    final IssueDetailsMetadata result =
+        adaptor.doGetIssueDetails(TEST_ISSUE_ID, metadataSource, getIssueDetailsAction);
 
     assertNotNull(result);
     assertSame(issueDetailsMetadata, result);
@@ -234,7 +226,8 @@ public class ComicVineMetadataAdaptorTest {
   public void testGetIssueDetails() throws MetadataException {
     Mockito.when(getIssueDetailsAction.execute()).thenReturn(issueDetailsMetadata);
 
-    final IssueDetailsMetadata result = adaptor.getIssueDetails(TEST_ISSUE_ID, metadataSource);
+    final IssueDetailsMetadata result =
+        adaptor.doGetIssueDetails(TEST_ISSUE_ID, metadataSource, getIssueDetailsAction);
 
     assertNotNull(result);
     assertSame(issueDetailsMetadata, result);

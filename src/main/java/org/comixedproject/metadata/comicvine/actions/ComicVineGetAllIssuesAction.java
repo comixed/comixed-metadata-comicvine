@@ -100,9 +100,6 @@ public class ComicVineGetAllIssuesAction
           this.getIssueWithDetailsAction.setBaseUrl(this.getBaseUrl());
           this.getIssueWithDetailsAction.setApiKey(this.getApiKey());
           this.getIssueWithDetailsAction.setIssueId(issue.getId());
-          //          final ComicVineIssue metadata = this.getIssueWithDetailsAction.execute();
-          //          entry.setCoverDate(metadata.getCoverDate());
-          //          entry.setStoreDate(metadata.getStoreDate());
         } catch (Exception error) {
           log.error("Failed to get issue cover and store dates", error);
         }

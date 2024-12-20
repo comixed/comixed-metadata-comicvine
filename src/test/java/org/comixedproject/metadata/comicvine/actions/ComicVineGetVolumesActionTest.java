@@ -21,8 +21,6 @@ package org.comixedproject.metadata.comicvine.actions;
 import static junit.framework.TestCase.*;
 
 import java.io.IOException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -56,7 +54,7 @@ public class ComicVineGetVolumesActionTest {
   @InjectMocks private ComicVineGetVolumesAction action;
 
   @Before
-  public void setUp() throws IOException, KeyStoreException, NoSuchAlgorithmException {
+  public void setUp() throws IOException {
     comicVineServer = new MockWebServer();
     comicVineServer.start();
 
