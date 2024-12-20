@@ -53,20 +53,6 @@ public class ComicVineMetadataAdaptor extends AbstractMetadataAdaptor {
   public static final long MINIMUM_DELAY_VALUE = 1L;
   public static final int REFERENCE_ID_POSITION = 2;
 
-  /** The action to fetch the list of volumes. */
-  protected ComicVineGetVolumesAction comicVineGetVolumesAction = new ComicVineGetVolumesAction();
-
-  /** The action to fetch all issues. */
-  protected ComicVineGetAllIssuesAction comicVineGetAllIssuesAction =
-      new ComicVineGetAllIssuesAction();
-
-  /** The action to fetch a single issue. */
-  protected ComicVineGetIssueAction comicVineGetIssueAction = new ComicVineGetIssueAction();
-
-  /** The action to get the details for a single issue. */
-  protected ComicVineGetIssueDetailsAction comicVineGetIssueDetailsAction =
-      new ComicVineGetIssueDetailsAction();
-
   public ComicVineMetadataAdaptor() {
     super("ComiXed ComicVine Scraper", PROVIDER_NAME);
   }
@@ -75,17 +61,27 @@ public class ComicVineMetadataAdaptor extends AbstractMetadataAdaptor {
   public List<VolumeMetadata> getVolumes(
       final String seriesName, final Integer maxRecords, final MetadataSource metadataSource)
       throws MetadataException {
+    return this.doGetVolumes(
+        seriesName, maxRecords, metadataSource, new ComicVineGetVolumesAction());
+  }
+
+  List<VolumeMetadata> doGetVolumes(
+      final String seriesName,
+      final Integer maxRecords,
+      final MetadataSource metadataSource,
+      final ComicVineGetVolumesAction action)
+      throws MetadataException {
     log.debug("Fetching volumes from ComicVine: seriesName={}", seriesName);
 
-    this.comicVineGetVolumesAction.setBaseUrl(BASE_URL);
-    this.comicVineGetVolumesAction.setApiKey(
+    action.setBaseUrl(BASE_URL);
+    action.setApiKey(
         this.getSourcePropertyByName(metadataSource.getProperties(), PROPERTY_API_KEY, true));
-    this.comicVineGetVolumesAction.setDelay(this.doGetDelayValue(metadataSource));
-    this.comicVineGetVolumesAction.setSeries(seriesName);
-    this.comicVineGetVolumesAction.setMaxRecords(maxRecords);
+    action.setDelay(this.doGetDelayValue(metadataSource));
+    action.setSeries(seriesName);
+    action.setMaxRecords(maxRecords);
 
     log.debug("Executing action");
-    final List<VolumeMetadata> result = this.comicVineGetVolumesAction.execute();
+    final List<VolumeMetadata> result = action.execute();
 
     log.debug("Returning {} volume{}", result.size(), result.size() == 1 ? "" : "s");
     return result;
@@ -94,16 +90,24 @@ public class ComicVineMetadataAdaptor extends AbstractMetadataAdaptor {
   @Override
   public List<IssueDetailsMetadata> getAllIssues(
       final String volume, final MetadataSource metadataSource) throws MetadataException {
+    return this.doGetAllIssues(volume, metadataSource, new ComicVineGetAllIssuesAction());
+  }
+
+  List<IssueDetailsMetadata> doGetAllIssues(
+      final String volume,
+      final MetadataSource metadataSource,
+      final ComicVineGetAllIssuesAction action)
+      throws MetadataException {
     log.debug("Fetching the list of all issues from ComicVine: volume={}", volume);
 
-    this.comicVineGetAllIssuesAction.setBaseUrl(BASE_URL);
-    this.comicVineGetAllIssuesAction.setApiKey(
+    action.setBaseUrl(BASE_URL);
+    action.setApiKey(
         this.getSourcePropertyByName(metadataSource.getProperties(), PROPERTY_API_KEY, true));
-    this.comicVineGetAllIssuesAction.setDelay(this.doGetDelayValue(metadataSource));
-    this.comicVineGetAllIssuesAction.setVolumeId(volume);
+    action.setDelay(this.doGetDelayValue(metadataSource));
+    action.setVolumeId(volume);
 
     log.debug("Executing action");
-    final List<IssueDetailsMetadata> result = this.comicVineGetAllIssuesAction.execute();
+    final List<IssueDetailsMetadata> result = action.execute();
 
     log.debug("Returning {} issue{}", result.size(), result.size() == 1 ? "" : "s");
     return result;
@@ -113,15 +117,24 @@ public class ComicVineMetadataAdaptor extends AbstractMetadataAdaptor {
   public IssueMetadata doGetIssue(
       final String volume, final String issueNumber, final MetadataSource metadataSource)
       throws MetadataException {
+    return this.doGetIssue(volume, issueNumber, metadataSource, new ComicVineGetIssueAction());
+  }
+
+  IssueMetadata doGetIssue(
+      final String volume,
+      final String issueNumber,
+      final MetadataSource metadataSource,
+      final ComicVineGetIssueAction action)
+      throws MetadataException {
     log.debug("Fetching issue from ComicVine: volume={} issueNumber={}", volume, issueNumber);
 
-    this.comicVineGetIssueAction.setBaseUrl(BASE_URL);
-    this.comicVineGetIssueAction.setApiKey(
+    action.setBaseUrl(BASE_URL);
+    action.setApiKey(
         this.getSourcePropertyByName(metadataSource.getProperties(), PROPERTY_API_KEY, true));
-    this.comicVineGetIssueAction.setVolumeId(volume);
-    this.comicVineGetIssueAction.setIssueNumber(issueNumber);
+    action.setVolumeId(volume);
+    action.setIssueNumber(issueNumber);
 
-    final List<IssueMetadata> result = this.comicVineGetIssueAction.execute();
+    final List<IssueMetadata> result = action.execute();
 
     return result.isEmpty() ? null : result.get(0);
   }
@@ -129,14 +142,22 @@ public class ComicVineMetadataAdaptor extends AbstractMetadataAdaptor {
   @Override
   public IssueDetailsMetadata getIssueDetails(
       final String issueId, final MetadataSource metadataSource) throws MetadataException {
+    return this.doGetIssueDetails(issueId, metadataSource, new ComicVineGetIssueDetailsAction());
+  }
+
+  IssueDetailsMetadata doGetIssueDetails(
+      final String issueId,
+      final MetadataSource metadataSource,
+      final ComicVineGetIssueDetailsAction action)
+      throws MetadataException {
     log.debug("Fetching issue details: issueId={}", issueId);
 
-    this.comicVineGetIssueDetailsAction.setBaseUrl(BASE_URL);
-    this.comicVineGetIssueDetailsAction.setApiKey(
+    action.setBaseUrl(BASE_URL);
+    action.setApiKey(
         this.getSourcePropertyByName(metadataSource.getProperties(), PROPERTY_API_KEY, true));
-    this.comicVineGetIssueDetailsAction.setIssueId(issueId);
+    action.setIssueId(issueId);
 
-    return this.comicVineGetIssueDetailsAction.execute();
+    return action.execute();
   }
 
   @Override

@@ -78,10 +78,7 @@ public class ComicVineGetIssueAction extends AbstractComicVineScrapingAction<Lis
 
       if (response == null) throw new MetadataException("No response received");
 
-      log.debug(
-          "Received: {} issue{}",
-          response.getIssues().size(),
-          response.getIssues().size() == 1 ? "" : "s");
+      log.debug("Received: {} issue(s)", response.getIssues().size());
 
       for (int index = 0; index < response.getIssues().size(); index++) {
         final ComicVineIssue issue = response.getIssues().get(index);

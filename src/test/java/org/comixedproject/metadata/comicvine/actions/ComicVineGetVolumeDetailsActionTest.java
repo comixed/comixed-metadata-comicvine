@@ -22,10 +22,6 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.comixedproject.metadata.MetadataException;
@@ -42,7 +38,6 @@ import org.springframework.http.MediaType;
 @RunWith(MockitoJUnitRunner.class)
 public class ComicVineGetVolumeDetailsActionTest {
   private static final String TEST_API_KEY = "this is the api key";
-  private static final String TEST_API_URL = "http://comicvine.gamespot/com/volumes/4050-9999/";
 
   private static final String TEST_NAME = "Flashpoint";
   private static final String TEST_START_YEAR = "2011";
@@ -53,17 +48,11 @@ public class ComicVineGetVolumeDetailsActionTest {
   @InjectMocks private ComicVineGetVolumeDetailsAction action;
 
   private MockWebServer comicVineServer;
-  private Date coverDate;
 
   @Before
   public void setUp() throws IOException {
     comicVineServer = new MockWebServer();
     comicVineServer.start();
-
-    final Calendar date = new GregorianCalendar();
-    date.setTimeZone(TimeZone.getTimeZone("UTC"));
-    date.set(2011, 10 - 1, 31, 0, 0, 0);
-    coverDate = date.getTime();
 
     final String hostname = String.format("http://localhost:%s", this.comicVineServer.getPort());
     action.setApiKey(TEST_API_KEY);

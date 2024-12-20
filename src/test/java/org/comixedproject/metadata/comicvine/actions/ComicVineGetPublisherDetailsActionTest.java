@@ -21,10 +21,6 @@ package org.comixedproject.metadata.comicvine.actions;
 import static junit.framework.TestCase.*;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.comixedproject.metadata.MetadataException;
@@ -41,7 +37,6 @@ import org.springframework.http.MediaType;
 @RunWith(MockitoJUnitRunner.class)
 public class ComicVineGetPublisherDetailsActionTest {
   private static final String TEST_API_KEY = "this is the api key";
-  private static final String TEST_VOLUME_ID = "282568";
 
   private static final String TEST_BAD_DATA = "This is not JSON";
   private static final String TEST_GOOD_DATA =
@@ -56,17 +51,11 @@ public class ComicVineGetPublisherDetailsActionTest {
   @InjectMocks private ComicVineGetPublisherDetailsAction action;
 
   private MockWebServer comicVineServer;
-  private Date coverDate;
 
   @Before
   public void setUp() throws IOException {
     comicVineServer = new MockWebServer();
     comicVineServer.start();
-
-    final Calendar date = new GregorianCalendar();
-    date.setTimeZone(TimeZone.getTimeZone("UTC"));
-    date.set(2011, 10 - 1, 31, 0, 0, 0);
-    coverDate = date.getTime();
 
     final String hostname = String.format("http://localhost:%s", this.comicVineServer.getPort());
     action.setApiUrl(hostname);
