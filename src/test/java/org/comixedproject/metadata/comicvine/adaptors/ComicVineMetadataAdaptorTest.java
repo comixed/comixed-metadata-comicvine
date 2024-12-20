@@ -50,9 +50,12 @@ public class ComicVineMetadataAdaptorTest {
   private static final String TEST_VOLUME_ID = "129";
   private static final String TEST_ISSUE_NUMBER = "17";
   private static final String TEST_ISSUE_ID = "327";
+  private static final String TEST_REFERENCE_ID = "1083732";
   private static final String TEST_WEB_ADDRESS =
-      "https://comicvine.gamespot.com/action-comics-futures-end-1-crossroads/4000-463937";
-  private static final String TEST_REFERENCE_ID = "463937";
+      String.format(
+          "%s-%s",
+          "https://comicvine.gamespot.com/action-comics-futures-end-1-crossroads/4000",
+          TEST_REFERENCE_ID);
 
   private final List<VolumeMetadata> volumeMetadataList = new ArrayList<>();
   private final List<IssueMetadata> issueMetadataList = new ArrayList<>();
