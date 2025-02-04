@@ -13,7 +13,7 @@ its data source.
 
 To use this adaptor, you need to:
 
-1. Download the project release [[link](http://github.com/comixed/comixed-metadata-comicvine/release)]
+1. Download the project release [[link](https://github.com/comixed/comixed-metadata-comicvine/releases)]
 1. Extract the **comixed-metadata-comicvine-*.jar** from the downloaded file.
 1. Place the jar into the **$HOME/.comixed/extensions** directory (see [this](https://github.com/comixed/comixed/blob/main/QUICKSTART.md#adding-extensions-and-plugins) for more details).
 1. Restart your server.
