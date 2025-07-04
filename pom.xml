@@ -57,7 +57,7 @@
         <sonar.links.issue>https://github.com/comixed/comixed-metadata-comicvine/issues</sonar.links.issue>
         <sonar.sources>${project.basedir}/src/main/java</sonar.sources>
         <lombok.version>1.18.38</lombok.version>
-        <log4j.version>2.20.0</log4j.version>
+        <log4j.version>2.24.3</log4j.version>
     </properties>
 
     <profiles>
