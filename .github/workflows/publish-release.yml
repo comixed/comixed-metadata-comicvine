@@ -35,4 +35,4 @@ jobs:
           prerelease: true
           title: Changes For 2.2-SNAPSHOT
           files: |
-            comixed-metadata-comicvine-2.2-SNAPSHOT-GA.zip
+            comixed-metadata-comicvine-3.1-SNAPSHOT-GA.zip
