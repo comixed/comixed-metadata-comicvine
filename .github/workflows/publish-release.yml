@@ -33,6 +33,6 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           draft: false
           prerelease: true
-          title: Changes For 2.2-SNAPSHOT
+          title: Changes For 3.1-SNAPSHOT
           files: |
             comixed-metadata-comicvine-3.1-SNAPSHOT-GA.zip
