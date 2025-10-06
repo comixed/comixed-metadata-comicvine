@@ -6,8 +6,8 @@ its data source.
 
 # Status
 
-[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=comixed_comixed-metadata-comicvine)](https://sonarcloud.io/dashboard?id=comixed_comixed-metadata-comicvine)
-
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=comixed_comixed-metadata-comicvine)](https://sonarcloud.io/dashboard?id=comixed_comixed-metadata-comicvine)\
+[![Github All Releases](https://img.shields.io/github/downloads/comixed/comixed-metadata-comicvine/total.svg)](https://github.com/comixed/comixed-metadata-comicvine/releases)
 
 # Installation
 
