@@ -37,7 +37,7 @@ public class ComicVineMetadataAdaptorProvider extends AbstractMetadataAdaptorPro
   /** The API key property name. */
   static final String PROPERTY_API_KEY = "comic-vine.api-key";
 
-  private static final String VERSION = "2.2-SNAPSHOT";
+  private static final String VERSION = "3.1-SNAPSHOT";
   private static final String HOMEPAGE = "http://www.github.com/comixed/comixed-metadata-comicvine";
   static final String PROPERTY_DELAY = "comic-vine.delay";
 
