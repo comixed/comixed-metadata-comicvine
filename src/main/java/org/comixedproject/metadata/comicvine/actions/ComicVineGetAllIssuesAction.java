@@ -116,8 +116,8 @@ public class ComicVineGetAllIssuesAction
         try {
           Thread.sleep(this.getDelay() * 1000L);
         } catch (InterruptedException error) {
-          log.error("ComicVine get volumes action interrupted", error);
-          throw new RuntimeException(error);
+          Thread.currentThread().interrupt();
+          throw new MetadataException("ComicVine get volumes action interrupted", error);
         }
       }
     }
