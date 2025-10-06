@@ -34,128 +34,6 @@
         <log4j.version>2.20.0</log4j.version>
     </properties>
 
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-                <property>
-                    <name>env</name>
-                    <value>dev</value>
-                </property>
-            </activation>
-            <repositories>
-              <repository>
-                <name>Central Portal Snapshots</name>
-                <id>central-portal-snapshots</id>
-                <url>https://central.sonatype.com/repository/maven-snapshots/</url>
-                <releases>
-                  <enabled>false</enabled>
-                </releases>
-                <snapshots>
-                  <enabled>true</enabled>
-                </snapshots>
-              </repository>
-            </repositories>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.cosium.code</groupId>
-                        <artifactId>git-code-format-maven-plugin</artifactId>
-                        <version>${maven-git-code-format.version}</version>
-                        <executions>
-                            <execution>
-                                <id>install-formatter-hook</id>
-                                <goals>
-                                    <goal>install-hooks</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>validate-code-format</id>
-                                <goals>
-                                    <goal>validate-code-format</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <dependencies>
-                            <dependency>
-                                <groupId>com.cosium.code</groupId>
-                                <artifactId>google-java-format</artifactId>
-                                <version>${git-code-format-maven-plugin.version}</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>ci</id>
-            <activation>
-                <property>
-                    <name>env</name>
-                    <value>ci</value>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.cosium.code</groupId>
-                        <artifactId>git-code-format-maven-plugin</artifactId>
-                        <version>${maven-git-code-format.version}</version>
-                        <executions>
-                            <execution>
-                                <id>install-formatter-hook</id>
-                                <goals>
-                                    <goal>install-hooks</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>validate-code-format</id>
-                                <goals>
-                                    <goal>validate-code-format</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <dependencies>
-                            <dependency>
-                                <groupId>com.cosium.code</groupId>
-                                <artifactId>google-java-format</artifactId>
-                                <version>${git-code-format-maven-plugin.version}</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.1.0</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                                <configuration>
-                                    <gpgArguments>
-                                        <argument>--pinentry-mode</argument>
-                                        <argument>loopback</argument>
-                                    </gpgArguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
     <dependencies>
         <dependency>
             <groupId>org.comixedproject</groupId>
@@ -224,18 +102,40 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>com.cosium.code</groupId>
+                <artifactId>git-code-format-maven-plugin</artifactId>
+                <version>${maven-git-code-format.version}</version>
+                <executions>
+                    <execution>
+                        <id>install-formatter-hook</id>
+                        <goals>
+                            <goal>install-hooks</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>validate-code-format</id>
+                        <goals>
+                            <goal>validate-code-format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.cosium.code</groupId>
+                        <artifactId>google-java-format</artifactId>
+                        <version>${git-code-format-maven-plugin.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.10</version>
+                <version>0.8.12</version>
                 <configuration>
                     <excludes>
                         <exclude>**/model/**</exclude>
-                        <exclude>**/comixedproject/http/**</exclude>
                         <exclude>**/*Exception*</exclude>
-                        <exclude>**/state/comicbooks/Comic*</exclude>
-                        <exclude>**/state/lists/ReadingList**</exclude>
-                        <exclude>**/batch/comicbooks/*Configuration</exclude>
-                        <exclude>**/ComiXed*App</exclude>
+                        <exclude>**/Abstract*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
@@ -252,6 +152,14 @@
                         </goals>
                     </execution>
                     <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <!-- jacoco isn't seeing the test output -->
+                    <!-- execution>
                         <id>check</id>
                         <goals>
                             <goal>check</goal>
@@ -270,8 +178,18 @@
                                 </rule>
                             </rules>
                         </configuration>
-                    </execution>
+                    </execution -->
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.3</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.22.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -370,7 +288,7 @@
                 <artifactId>gitlog-maven-plugin</artifactId>
                 <version>1.14.0</version>
                 <configuration>
-                    <reportTitle>Changelog for the ComiXed ComicVine Metadata Scraper v2.2-SNAPSHOT</reportTitle>
+                    <reportTitle>Changelog for the ComiXed ComicVine Metadata Scraper v3.1-SNAPSHOT</reportTitle>
                     <verbose>false</verbose>
                     <outputDirectory>${project.basedir}</outputDirectory>
                     <generateMarkdownChangeLog>true</generateMarkdownChangeLog>
